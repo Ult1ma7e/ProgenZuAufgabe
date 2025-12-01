@@ -111,23 +111,55 @@ namespace Datenhaltung
             
             using (var context = new AppDbContext(_dbPath))
             {
-                var result = context.Periode.FirstOrDefault(p => p.ID == periodeID);
-                if (result == null) throw new Exception($"Periode with ID {periodeID} not found.");
-                return result;
+                Periode periode = null;
+
+                foreach (var item in context.Periode)
+                {
+                    if (item.ID == periodeID)
+                    {
+                        periode = item;
+                        break;  
+                    }
+                }
+
+                if (periode == null)
+                {
+                    throw new Exception($"Periode with ID {periodeID} not found.");
+                }
+                
+                return periode;
             }
         }
 
         public static Einheiten Einheiten(int periodeID)
         {
-            if (!IstGeladen) throw new Exception("Database did not load");
+            if (!IstGeladen)
+            {
+                throw new Exception("Database did not load.");
+            }
 
             using (var context = new AppDbContext(_dbPath))
             {
-                var result = context.Einheiten.FirstOrDefault(e => e.PeriodeID == periodeID);
-                if (result == null) throw new Exception($"Einheiten with PeriodeID {periodeID} not found.");
-                return result;
+                Einheiten einheit = null;
+
+                foreach (var item in context.Einheiten)
+                {
+                    if (item.PeriodeID == periodeID)
+                    {
+                        einheit = item;
+                        break;
+                    }
+                }
+
+                if (einheit == null)
+                {
+                    throw new Exception("No Einheiten entry found for PeriodeID: " + periodeID);
+                }
+
+                return einheit;
             }
         }
+
 
         public static Mitarbeiter Mitarbeiter(int periodeID)
         {
@@ -135,9 +167,23 @@ namespace Datenhaltung
 
             using (var context = new AppDbContext(_dbPath))
             {
-                var result = context.Mitarbeiter.FirstOrDefault(m => m.PeriodeID == periodeID);
-                if (result == null) throw new Exception($"Mitarbeiter with PeriodeID {periodeID} not found.");
-                return result;
+                Mitarbeiter mitarbeiter = null;
+
+                foreach (var item in context.Mitarbeiter)
+                {
+                    if (item.ID == periodeID)
+                    {
+                        mitarbeiter = item;
+                        break;  
+                    }
+                }
+                
+                if (mitarbeiter == null)
+                {
+                    throw new Exception($"Mitarbeiter with PeriodeID {periodeID} not found.");
+                }
+                
+                return mitarbeiter;
             }
         }
 
@@ -147,9 +193,23 @@ namespace Datenhaltung
 
             using (var context = new AppDbContext(_dbPath))
             {
-                var result = context.Indizes.FirstOrDefault(i => i.PeriodeID == periodeID);
-                if (result == null) throw new Exception($"Indizes with PeriodeID {periodeID} not found.");
-                return result;
+                Indizes indizes = null;
+
+                foreach (var item in context.Indizes)
+                {
+                    if (item.ID == periodeID)
+                    {
+                        indizes = item;
+                        break;  
+                    }
+                }
+
+                if (indizes == null)
+                {
+                    throw new Exception($"Indizes with PeriodeID {periodeID} not found.");
+                }
+
+                return indizes;
             }
         }
     }
